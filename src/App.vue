@@ -1,5 +1,7 @@
 <template>
-  <div>你好</div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
