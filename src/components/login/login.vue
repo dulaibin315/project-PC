@@ -2,19 +2,16 @@
   <div id="myLogin">
     <el-card>
       <img src="../../assets/logo_index.png" alt />
-      <el-form ref="form" :model="form">
-        <el-form-item>
-          <el-input v-model="form.name" placeholder="请输入账号"></el-input>
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item prop="mobile">
+          <el-input v-model="form.mobile" placeholder="请输入账号"></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.name" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="form.name" class="myInput" placeholder="请验证码码"></el-input>
+        <el-form-item prop="code">
+          <el-input v-model="form.code" class="myInput" placeholder="请验证码码"></el-input>
           <el-button type="primary">获取验证码</el-button>
         </el-form-item>
         <el-checkbox :value="1>0">我已同意协议</el-checkbox>
-        <el-button type="primary" class="myBtn">立即创建</el-button>
+        <el-button type="primary" class="myBtn" @click="myLogin">立即创建</el-button>
       </el-form>
     </el-card>
   </div>
@@ -23,10 +20,44 @@
 <script>
 export default {
   data () {
+    var myValid = (rule, value, callback) => {
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('手机号格式不正确'))
+      }
+    }
     return {
       form: {
-        name: ''
+        mobile: '',
+        code: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入正确的手机号', trigger: 'blur' },
+          { validator: myValid, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入正确的验证码', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    myLogin () {
+      // 进行全局匹配
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$axios({
+            url: 'authorizations',
+            method: 'post',
+            data: this.form
+          }).then(() => {
+            this.$router.push('/')
+          })
+        } else {
+        }
+      })
     }
   }
 }
