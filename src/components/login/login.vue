@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import local from '@/untils'
 export default {
   data () {
     var myValid = (rule, value, callback) => {
@@ -29,8 +30,8 @@ export default {
     }
     return {
       form: {
-        mobile: '',
-        code: ''
+        mobile: '15711111111',
+        code: '246810'
       },
       rules: {
         name: [
@@ -52,7 +53,8 @@ export default {
             url: 'authorizations',
             method: 'post',
             data: this.form
-          }).then(() => {
+          }).then((result) => {
+            local.setData(result)
             this.$router.push('/')
           })
         } else {

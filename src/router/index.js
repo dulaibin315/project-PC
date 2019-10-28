@@ -5,10 +5,12 @@ import Login from '@/components/login/login.vue'
 import homePage from '@/components/homePage'
 import Welcome from '@/components/welcome'
 import NotFound from '@/components/404/notFound.vue'
+import Article from '@/components/article'
+import local from '@/untils'
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
+let router = new VueRouter({
   routes: [{
     path: '/login',
     component: Login
@@ -18,6 +20,9 @@ export default new VueRouter({
     children: [{
       path: '/',
       component: Welcome
+    }, {
+      path: '/article',
+      component: Article
     }]
   },
   {
@@ -26,3 +31,11 @@ export default new VueRouter({
   }
   ]
 })
+router.beforeEach((to, from, next) => {
+  if (!local.getData() && to.path !== '/login') {
+    next('/login')
+    return
+  }
+  next()
+})
+export default router
