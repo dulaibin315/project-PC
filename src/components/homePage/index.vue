@@ -2,7 +2,7 @@
   <el-container class="myContainer">
     <el-aside :width="isOk?'60px':'200px'">
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         background-color="#002044"
         text-color="#fff"
@@ -12,7 +12,6 @@
         :collapse-transition="false"
       >
         <div class="asilde-top" :class="{asildeTop:isOk}"></div>
-        <!-- <el-menu-item class="asilde-top" ></el-menu-item> -->
         <el-menu-item index="/">
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
@@ -48,9 +47,9 @@
         <span class="el-icon-s-fold" @click="myClick"></span>
         <span class="myText">新闻资讯中心</span>
         <el-dropdown>
-          <img src="../../assets/avatar.jpg" alt />
+          <img :src="userData.photo" alt />
           <span class="el-dropdown-link">
-            用户名
+            {{userData.name}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -67,10 +66,15 @@
 </template>
 
 <script>
+import Local from '@/untils'
 export default {
+  created () {
+    this.userData = Local.getData()
+  },
   data () {
     return {
-      isOk: true
+      isOk: true,
+      userData: ''
     }
   },
   methods: {
@@ -120,9 +124,10 @@ export default {
     .el-dropdown {
       float: right;
       img {
-        width: 30px;
-        height: 30px;
+        width: 36px;
+        height: 36px;
         vertical-align: middle;
+        border-radius:50%
       }
       .el-dropdown-link {
         cursor: pointer;

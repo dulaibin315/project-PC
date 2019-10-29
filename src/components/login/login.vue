@@ -46,18 +46,17 @@ export default {
   },
   methods: {
     myLogin () {
-      // 进行全局匹配
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.$axios({
+      this.$refs.form.validate(async valid => {
+        try {
+          let result = await this.$axios({
             url: 'authorizations',
             method: 'post',
             data: this.form
-          }).then((result) => {
-            local.setData(result)
-            this.$router.push('/')
           })
-        } else {
+          local.setData(result)
+          this.$router.push('/')
+        } catch (e) {
+
         }
       })
     }
