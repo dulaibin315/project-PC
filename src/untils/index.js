@@ -5,6 +5,9 @@ let myLocal = {
   },
   setData (user) {
     window.sessionStorage.setItem(myName, JSON.stringify(user.data.data))
+  },
+  delData () {
+    window.sessionStorage.removeItem(myName)
   }
 }
 export default myLocal

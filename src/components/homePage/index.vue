@@ -52,9 +52,9 @@
             {{userData.name}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu slot='dropdown'>
             <el-dropdown-item>个人设置</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click.native='logout'>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -80,6 +80,10 @@ export default {
   methods: {
     myClick () {
       this.isOk = !this.isOk
+    },
+    logout () {
+      Local.delData()
+      this.$router.push('/login')
     }
   }
 }
