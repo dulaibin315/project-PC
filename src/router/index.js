@@ -6,6 +6,7 @@ import homePage from '@/components/homePage'
 import Welcome from '@/components/welcome'
 import NotFound from '@/components/404/notFound.vue'
 import Article from '@/components/article'
+import Image from '@/components/image'
 import local from '@/untils'
 
 Vue.use(VueRouter)
@@ -23,6 +24,9 @@ let router = new VueRouter({
     }, {
       path: '/article',
       component: Article
+    }, {
+      path: '/image',
+      component: Image
     }]
   },
   {

@@ -15,9 +15,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-          <el-select v-model="myObj.channel_id" placeholder="请选择">
-            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
+          <Channel v-model="myObj.channel_id"></Channel>
         </el-form-item>
         <el-form-item label="日期：">
           <div class="block">
@@ -97,13 +95,12 @@
 export default {
   created () {
     this.myLoad()
-    this.mySelect()
   },
   data () {
     return {
       myObj: {
         status: null,
-        channel_id: null,
+        channel_id: 2,
         begin_pubdate: null,
         end_pubdate: null,
         per_page: 30,
@@ -111,7 +108,6 @@ export default {
       },
       count: 0,
       value: [],
-      options: [],
       tableData: []
     }
   },
@@ -124,10 +120,6 @@ export default {
     async myDel (id) {
       await this.$axios.delete(`articles/${id}`)
       this.myLoad()
-    },
-    async mySelect () {
-      let obj = await this.$axios.get('channels')
-      this.options = obj.data.data.channels
     },
     myPage (current) {
       this.myObj.page = current
