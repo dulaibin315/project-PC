@@ -4,43 +4,47 @@
       <Crumb>素材管理</Crumb>
     </div>
     <div>
-      <el-radio-group v-model="myObj.collect" size="small" @change="myBtn">
+      <el-radio-group @change="myBtn" size="small" v-model="myObj.collect">
         <el-radio-button label="false">全部</el-radio-button>
         <el-radio-button label="true">收藏</el-radio-button>
       </el-radio-group>
-      <el-button type="success" size="small" style="float:right" @click="dialogVisible=true">
+      <el-button @click="dialogVisible=true" size="small" style="float:right" type="success">
         添加素材
-        <el-dialog title="添加素材" :visible.sync="dialogVisible" width="400px">
+        <el-dialog :visible.sync="dialogVisible" title="添加素材" width="400px">
           <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :headers="headers"
+            :on-success="fn"
             :show-file-list="false"
+            action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+            class="avatar-uploader"
+            name="image"
           >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <img :src="imageUrl" class="avatar" v-if="imageUrl" />
+            <i class="el-icon-plus avatar-uploader-icon" v-else></i>
           </el-upload>
         </el-dialog>
       </el-button>
     </div>
     <!-- <el-item> -->
-    <div class="myDv" v-for="item in myList" :key="item.id">
+    <div :key="item.id" class="myDv" v-for="item in myList">
       <img :src="item.url" alt />
       <div class="myCover">
-        <span class="el-icon-star-off" :class="{current:item.is_collected} " @click="myShou(item)"></span>
-        <span class="el-icon-delete" @click="myDEL(item)"></span>
+        <span :class="{current:item.is_collected} " @click="myShou(item)" class="el-icon-star-off"></span>
+        <span @click="myDEL(item)" class="el-icon-delete"></span>
       </div>
     </div>
     <!-- </el-item> -->
     <el-pagination
-      background
-      layout="prev, pager, next"
       :total="myList.length%this.myObj.per_page+1"
       @current-page="myChange"
+      background
+      layout="prev, pager, next"
     ></el-pagination>
   </el-card>
 </template>
 
 <script>
+import myUser from '@/untils'
 export default {
   data () {
     return {
@@ -51,7 +55,8 @@ export default {
       },
       myList: [],
       dialogVisible: false,
-      imageUrl: ''
+      imageUrl: '',
+      headers: { Authorization: `Bearer ${myUser.getData().token}` }
     }
   },
   created () {
@@ -84,7 +89,14 @@ export default {
       await this.$axios.delete(`user/images/${item.id}`)
       this.myData()
     },
-    myAdd () {}
+    myAdd () {},
+    fn (res) {
+      this.imageUrl = res.data.url
+      setTimeout(() => {
+        this.dialogVisible = false
+      }, 2000)
+      this.myData()
+    }
   }
 }
 </script>
