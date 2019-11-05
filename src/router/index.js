@@ -8,6 +8,8 @@ import NotFound from '@/components/404/notFound.vue'
 import Article from '@/components/article'
 import Image from '@/components/image'
 import MyArticle from '@/components/myArticle'
+import Comment from '@/components/comment'
+import Setting from '@/components/setting'
 import local from '@/untils'
 
 Vue.use(VueRouter)
@@ -31,6 +33,12 @@ let router = new VueRouter({
     }, {
       path: '/publish',
       component: MyArticle
+    }, {
+      path: '/comment',
+      component: Comment
+    }, {
+      path: '/setting',
+      component: Setting
     }]
   },
   {

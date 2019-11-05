@@ -20,19 +20,19 @@
         <el-form-item label="日期：">
           <div class="block">
             <el-date-picker
-              v-model="myObj.value"
-              type="daterange"
+              @change="myDate"
+              clearable
+              end-placeholder="结束日期"
               range-separator="至"
               start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              @change="myDate"
+              type="daterange"
+              v-model="myObj.value"
               value-format="yyyy-MM-dd"
-              clearable
             ></el-date-picker>
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="myScreen">筛选</el-button>
+          <el-button @click="myScreen" type="primary">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -46,12 +46,12 @@
             <template slot-scope="scope">
               <el-image :src="scope.row.cover.images[0]" style="width:150px;height:100px">
                 <div slot="error">
-                  <img src="../../assets/error.gif" alt style="width:150px;height:100px" />
+                  <img alt src="../../assets/error.gif" style="width:150px;height:100px" />
                 </div>
               </el-image>
             </template>
           </el-table-column>
-          <el-table-column prop="title" label="标题"></el-table-column>
+          <el-table-column label="标题" prop="title"></el-table-column>
           <el-table-column label="状态">
             <template slot-scope="scope">
               <el-button type="info" v-if="scope.row.status==0">草稿</el-button>
@@ -60,32 +60,32 @@
               <el-button type="danger" v-if="scope.row.status==3">审核失败</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="pubdate" label="发布时间"></el-table-column>
+          <el-table-column label="发布时间" prop="pubdate"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
-                type="primary"
-                icon="el-icon-edit"
-                circle
-                plain
                 @click="myEdit(scope.row.id)"
+                circle
+                icon="el-icon-edit"
+                plain
+                type="primary"
               ></el-button>
               <el-button
-                type="danger"
-                icon="el-icon-delete"
-                circle
-                plain
                 @click="myDel(scope.row.id)"
+                circle
+                icon="el-icon-delete"
+                plain
+                type="danger"
               ></el-button>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <el-pagination
+        :total="this.count/this.myObj.per_page"
         @current-change="myPage"
         background
         layout="prev, pager, next"
-        :total="this.count/this.myObj.per_page"
       ></el-pagination>
     </el-card>
   </div>
@@ -100,7 +100,7 @@ export default {
     return {
       myObj: {
         status: null,
-        channel_id: 2,
+        channel_id: null,
         begin_pubdate: null,
         end_pubdate: null,
         per_page: 30,
@@ -139,7 +139,7 @@ export default {
       }
     },
     myEdit (id) {
-      this.$router.push({ path: '/content', query: { id } })
+      this.$router.push({ path: '/publish', query: { id } })
     }
   }
 }
