@@ -10,6 +10,7 @@ import Image from '@/components/image'
 import MyArticle from '@/components/myArticle'
 import Comment from '@/components/comment'
 import Setting from '@/components/setting'
+import Fun from '@/components/fun'
 import local from '@/untils'
 
 Vue.use(VueRouter)
@@ -39,6 +40,9 @@ let router = new VueRouter({
     }, {
       path: '/setting',
       component: Setting
+    }, {
+      path: '/fans',
+      component: Fun
     }]
   },
   {
